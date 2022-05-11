@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Atelier 20</title>
+
+    <!-- Style -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="script.js" defer></script>
+  </head>
+
+  <body>
+    <div id="root">
+      <nav>
+        <ul class="tabs">
+          <li
+            :class="'tab ' + (activeList == 'todo' ? 'active' : '')"
+            @click="activeList = 'todo'"
+          >
+            A faire
+          </li>
+          <li
+            :class="'tab ' + (activeList == 'inProgress' ? 'active' : '')"
+            @click="activeList = 'inProgress'"
+          >
+            En cours
+          </li>
+          <li
+            :class="'tab ' + (activeList == 'done' ? 'active' : '')"
+            @click="activeList = 'done'"
+          >
+            Terminées
+          </li>
+        </ul>
+      </nav>
+
+      <section class="lists-container">
+        <div class="list" v-show="activeList === 'todo'">
+          <h2>A faire</h2>
+          <ul>
+            <li v-for="(element, index) in toDoList">
+              {{element}}
+              <button @click="switchTaskToInProgress" :data-index="index">
+                En cours
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="list" v-show="activeList === 'inProgress'">
+          <h2>En cours</h2>
+          <ul>
+            <li v-for="(element, index) in inProgressList">
+              {{element}}
+              <button @click="switchTaskToDone" :data-index="index">
+                Terminer
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="list" v-show="activeList === 'done'">
+          <h2>Terminées</h2>
+          <ul>
+            <li v-for="(element, index) in doneList">
+              {{element}}
+              <button @click="deleteTask" :data-index="index">Supprimer</button>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <input type="text" @input="updateTask" :value="task" />
+      <button @click="addTaskToList">Ajouter</button>
+    </div>
+  </body>
+</html>
